@@ -1,0 +1,14 @@
+{
+
+    "email_details" : {
+    	"email_host" : "smtp.gmail.com" ,
+    	"email_port" : 587 ,
+    	"email_username" : "thejanrupasinghe@gmail.com" ,
+    	"email_password" : "etrlhcihevrdfmhm"
+    },
+
+    "match_list" : [
+    	"ERROR"
+    ]
+
+}

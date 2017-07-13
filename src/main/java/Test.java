@@ -2,7 +2,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
-
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.client.transport.TransportClient;
@@ -11,6 +10,7 @@ import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -18,9 +18,10 @@ import org.json.simple.parser.JSONParser;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.mail.PasswordAuthentication;
+
 import java.io.FileReader;
 import java.net.*;
-import java.net.PasswordAuthentication;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -39,8 +40,7 @@ public class Test {
 
         try {
 
-            Object obj = parser.parse(new FileReader(
-                    "file1.txt"));
+            Object obj = parser.parse(new FileReader("file.txt"));
 
             JSONObject jsonObject = (JSONObject) obj;
 
@@ -51,6 +51,8 @@ public class Test {
             System.out.println("Name: " + name);
             System.out.println("Author: " + author);
             System.out.println("\nCompany List:");
+            System.out.println(companyList.get(1).getClass().getName());
+            System.exit(0);
             Iterator<String> iterator = companyList.iterator();
             while (iterator.hasNext()) {
                 System.out.println(iterator.next());
@@ -85,9 +87,10 @@ public class Test {
         System.out.println(response.toString());
         System.out.println(response.getHits().getHits().length);
 
-        for (SearchHit hit : response.getHits().getHits()) {
-            System.out.println(hit.getSource().get("message"));
-        }
+        String log_message = response.getHits().getHits()[0].getSource().get("message").toString();
+//        for (SearchHit hit : response.getHits().getHits()) {
+            System.out.println(log_message);
+//        }
 
         Map<String, Object> template_params = new HashMap<String, Object>();
         template_params.put("param_gender", "male");
@@ -117,8 +120,8 @@ public class Test {
         // Get the default Session object.
         Session session = Session.getDefaultInstance(props,
                 new javax.mail.Authenticator() {    // Define the authenticator
-                    protected javax.mail.PasswordAuthentication getPasswordAuthentication() {
-                        return new javax.mail.PasswordAuthentication("thejanrupasinghe@gmail.com","etrlhcihevrdfmhm");
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication("thejanrupasinghe@gmail.com","etrlhcihevrdfmhm");
                     }
                 });
 
@@ -133,10 +136,11 @@ public class Test {
             message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
 
             // Set Subject: header field
-            message.setSubject("This is the Subject Line!");
+            message.setSubject("[ERROR LOG]");
 
             // Now set the actual message
-            message.setText("This is actual message");
+//            message.setText(log_message);
+            message.setText("message");
 
             // Send message
             Transport.send(message);
