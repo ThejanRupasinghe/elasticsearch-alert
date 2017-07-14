@@ -2,6 +2,8 @@
  * Created by thejan on 7/13/17.
  */
 
+import org.apache.logging.log4j.Logger;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -14,15 +16,20 @@ import java.util.ArrayList;
 /**
  * This class will do the configurations of MailSender and matching patterns
  */
-public class Configuration {
+public enum Configuration {
+
+    INSTANCE;
 
     private final String FILENAME = "config.json";
 
-    private static String emailHost;
-    private static String emailPort;
-    private static String emailUsername;
+    private String emailHost;
+    private String emailPort;
+    private String emailUsername;
+    private String emailPassword;
+    private String emailReceiversAddress;
 
-    private static String emailPassword;
+    private String elasticsearchHost;
+    private String elasticsearchClusterName;
 
     private ArrayList<String> matchList;
 
@@ -36,9 +43,11 @@ public class Configuration {
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println("Error in configuration file");
+            return false;
         } catch (ParseException e) {
             e.printStackTrace();
             System.out.println("Error in configuration file");
+            return false;
         }
 
         JSONObject jsonObject = (JSONObject) parserObject;
@@ -48,6 +57,11 @@ public class Configuration {
         emailPort = (emailDetailsJson.get("email_port")).toString();
         emailUsername = (String) emailDetailsJson.get("email_username");
         emailPassword = (String) emailDetailsJson.get("email_password");
+        emailReceiversAddress = (String) emailDetailsJson.get("email_receiver_address");
+
+        JSONObject elasticsearchDetailsJson = (JSONObject) jsonObject.get("elasticsearch_details");
+        elasticsearchHost = (String) elasticsearchDetailsJson.get("host");
+        elasticsearchClusterName = (String) elasticsearchDetailsJson.get("cluster_name");
 
         JSONArray matchListJson = (JSONArray) jsonObject.get("match_list");
 
@@ -58,17 +72,20 @@ public class Configuration {
             matchList.add(matchJson.toString());
         }
 
-        if( emailHost==null || emailPort==null || emailUsername==null || emailPassword==null || matchList==null) {
+        if( emailHost==null || emailPort==null || emailUsername==null || emailPassword==null || matchList==null || emailReceiversAddress==null) {
             System.out.println("ERROR");
             return false;
         } else {
 
             System.out.println("Getting configuration successful..");
             System.out.println("TLS encryption enabled");
-            System.out.println("Email Host : "+emailHost);
-            System.out.println("Email Port : "+emailPort);
-            System.out.println("Email Username : "+emailUsername);
-            System.out.println("Match List : "+matchList.toString());
+            System.out.println("Email Host : " + emailHost);
+            System.out.println("Email Port : " + emailPort);
+            System.out.println("Email Username : " + emailUsername);
+            System.out.println("Email Receiver's Address : " + emailReceiversAddress);
+            System.out.println("Elasticsearch Host : " + elasticsearchHost);
+            System.out.println("Elasticsearch Cluster Name : " + elasticsearchClusterName);
+            System.out.println("Match List : " + matchList.toString());
 //            System.out.println("Email Password: "+emailPassword);
 
             return true;
@@ -76,19 +93,19 @@ public class Configuration {
 
     }
 
-    public static String getEmailHost() {
+    public String getEmailHost() {
         return emailHost;
     }
 
-    public static String getEmailPort() {
+    public String getEmailPort() {
         return emailPort;
     }
 
-    public static String getEmailUsername() {
+    public String getEmailUsername() {
         return emailUsername;
     }
 
-    public static String getEmailPassword() {
+    public String getEmailPassword() {
         return emailPassword;
     }
 
@@ -96,4 +113,15 @@ public class Configuration {
         return matchList;
     }
 
+    public String getEmailReceiversAddress() {
+        return emailReceiversAddress;
+    }
+
+    public String getElasticsearchHost() {
+        return elasticsearchHost;
+    }
+
+    public String getElasticsearchClusterName() {
+        return elasticsearchClusterName;
+    }
 }

@@ -32,7 +32,7 @@ import java.util.*;
  */
 public class Test {
 
-    private final static Logger LOGGER = LogManager.getLogger(Test.class);
+//    private final static Logger LOGGER = LogManager.getLogger(Test.class);
 
     public static void main(String[] args) {
 
@@ -52,7 +52,6 @@ public class Test {
             System.out.println("Author: " + author);
             System.out.println("\nCompany List:");
             System.out.println(companyList.get(1).getClass().getName());
-            System.exit(0);
             Iterator<String> iterator = companyList.iterator();
             while (iterator.hasNext()) {
                 System.out.println(iterator.next());

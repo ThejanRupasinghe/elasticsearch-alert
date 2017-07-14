@@ -4,7 +4,13 @@
     	"email_host" : "smtp.gmail.com" ,
     	"email_port" : 587 ,
     	"email_username" : "thejanrupasinghe@gmail.com" ,
-    	"email_password" : "etrlhcihevrdfmhm"
+    	"email_password" : "etrlhcihevrdfmhm" ,
+    	"email_receiver_address" : "thejan@wso2.com"
+    },
+
+    "elasticsearch_details" : {
+    	"host" : "localhost" ,
+    	"cluster_name" : "elasticsearch"
     },
 
     "match_list" : [
