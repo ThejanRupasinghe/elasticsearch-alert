@@ -49,22 +49,18 @@ public enum QueryElasticsearch {
         /** Taking Date in the format logstash-2017.07.12 **/
         DateFormat dateFormatLogstash = new SimpleDateFormat("yyyy.MM.dd");
         String dateForLogstashIndex = dateFormatLogstash.format(date);
-//        System.out.println(dateForLogstashIndex);
 
         DateFormat dateFormatQuery = new SimpleDateFormat("yyyy-MM-dd");
         String dateForQuery = dateFormatQuery.format(date);
-//        System.out.println(dateForQuery);
 
         DateFormat dateFormatQueryTime = new SimpleDateFormat("HH:mm:ss");
         dateFormatQueryTime.setTimeZone(new SimpleTimeZone(SimpleTimeZone.UTC_TIME, "UTC"));
         String timeForQuery = dateFormatQueryTime.format(date);
-//        System.out.println(timeForQuery);
 
         Calendar calendar =Calendar.getInstance();
         calendar.setTime(date);
         calendar.add(Calendar.SECOND, AlertMain.TIMEPERIOD/1000);
         String timeForQueryNext = dateFormatQueryTime.format(calendar.getTime());
-//        System.out.println(timeForQueryNext);
 
         String queryString = "";
         for (int i=0; i< Configuration.INSTANCE.getMatchList().size()-1;i++){
@@ -81,8 +77,8 @@ public enum QueryElasticsearch {
         String timeStampToQueryNext = dateForQuery + "T" + timeForQueryNext + ".000Z";
         System.out.println(timeStampToQuery);
         System.out.println(timeStampToQueryNext);
-        System.exit(0);
-        QueryBuilder qbr = rangeQuery("@timestamp").from("2017-07-04T11:09:26.100Z").to("2017-07-04T11:09:46.937Z");
+
+        QueryBuilder qbr = rangeQuery("@timestamp").from(timeStampToQuery).to(timeStampToQueryNext);
 
         String log_message = null;
 
@@ -90,7 +86,8 @@ public enum QueryElasticsearch {
 
             SearchResponse response = client.prepareSearch("logstash-" + dateForLogstashIndex)
                     .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
-                    .setQuery(qb)                // Query
+                    .setQuery(qb)
+                    .setPostFilter(qbr)// Query
                     .setFrom(0).setSize(10).setExplain(false)
                     .get();
 
