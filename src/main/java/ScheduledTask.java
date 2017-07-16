@@ -10,6 +10,6 @@ public class ScheduledTask extends TimerTask {
 
         String response = QueryElasticsearch.INSTANCE.query();
 
-        MailSender.INSTANCE.sendMail(response);
+//        MailSender.INSTANCE.sendMail(response);
     }
 }

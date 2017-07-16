@@ -7,6 +7,8 @@ import java.util.TimerTask;
  */
 public class AlertMain {
 
+    public static final int TIMEPERIOD = 20000;
+
     public static void main(String[] args) throws InterruptedException{
 
         boolean goodConfiguration = Configuration.INSTANCE.readConfigurationFile();
@@ -21,7 +23,7 @@ public class AlertMain {
 
         Timer time = new Timer();
         ScheduledTask st = new ScheduledTask();
-        time.schedule(st, 0, 20000);
+        time.schedule(st, 0, TIMEPERIOD);
 
 
 

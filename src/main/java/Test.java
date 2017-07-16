@@ -19,6 +19,7 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.mail.PasswordAuthentication;
+import javax.swing.*;
 
 import java.io.FileReader;
 import java.net.*;
@@ -36,6 +37,19 @@ public class Test {
 
     public static void main(String[] args) {
 
+        Date date = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        dateFormat.setTimeZone(new SimpleTimeZone(SimpleTimeZone.UTC_TIME, "UTC"));
+        String formattedDate = dateFormat.format(date);
+
+        Calendar cal =Calendar.getInstance();
+        cal.setTime(date);
+        cal.add(Calendar.SECOND, 20);
+        System.out.println(cal.getTime());
+        System.out.println(formattedDate);
+    }
+
+    public void testMethod () {
         JSONParser parser = new JSONParser();
 
         try {
@@ -88,7 +102,7 @@ public class Test {
 
         String log_message = response.getHits().getHits()[0].getSource().get("message").toString();
 //        for (SearchHit hit : response.getHits().getHits()) {
-            System.out.println(log_message);
+        System.out.println(log_message);
 //        }
 
         Map<String, Object> template_params = new HashMap<String, Object>();
