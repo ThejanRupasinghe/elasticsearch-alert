@@ -73,7 +73,7 @@ public enum Configuration {
         }
 
         if( emailHost==null || emailPort==null || emailUsername==null || emailPassword==null || matchList==null || emailReceiversAddress==null) {
-            System.out.println("ERROR");
+            System.out.println("Error in Configuration Details");
             return false;
         } else {
 

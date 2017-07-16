@@ -5,6 +5,7 @@ import org.elasticsearch.client.transport.NoNodeAvailableException;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.Settings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
+import org.elasticsearch.index.IndexNotFoundException;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.transport.client.PreBuiltTransportClient;
@@ -100,6 +101,9 @@ public enum QueryElasticsearch {
 
             e.printStackTrace();
             System.out.println("No Available Nodes to connect. Please give correct configurations and run Elasticsearch.");
+        } catch (IndexNotFoundException e) {
+//            e.printStackTrace();
+            System.out.println("No such index");
         }
 
 
