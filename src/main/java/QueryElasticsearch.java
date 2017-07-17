@@ -28,6 +28,9 @@ public enum QueryElasticsearch {
     Settings settings;
     TransportClient client;
 
+    /**
+     * @return
+     */
     public boolean configure () {
 
         settings = Settings.builder().put("cluster.name",Configuration.INSTANCE.getElasticsearchClusterName()).build();
@@ -43,6 +46,10 @@ public enum QueryElasticsearch {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public ArrayList<String> query() {
 
         ArrayList<String> logMessages = new ArrayList<String>();
@@ -67,8 +74,8 @@ public enum QueryElasticsearch {
 
         String queryString = "";
         for (int i=0; i< Configuration.INSTANCE.getMatchList().size()-1;i++){
-            queryString+=Configuration.INSTANCE.getMatchList().get(i);
-            queryString+=" OR ";
+            queryString += Configuration.INSTANCE.getMatchList().get(i);
+            queryString += " OR ";
         }
         queryString+=Configuration.INSTANCE.getMatchList().get(Configuration.INSTANCE.getMatchList().size()-1);
         System.out.println(queryString);

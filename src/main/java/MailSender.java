@@ -15,6 +15,10 @@ public enum MailSender {
     private String to_email ;
     private String from_email ;
 
+    /**
+     *
+     * @return
+     */
     public boolean configureMail () {
 
         properties = new Properties();
@@ -32,6 +36,11 @@ public enum MailSender {
 
     }
 
+    /**
+     *
+     * @param messageList
+     * @return
+     */
     public boolean sendMail(ArrayList<String> messageList) {
 
         // Get the default Session object.
