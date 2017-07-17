@@ -1,6 +1,7 @@
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import java.util.ArrayList;
 import java.util.Properties;
 
 /**
@@ -31,7 +32,7 @@ public enum MailSender {
 
     }
 
-    public boolean sendMail(String message) {
+    public boolean sendMail(ArrayList<String> messageList) {
 
         // Get the default Session object.
         Session session = Session.getDefaultInstance(properties,
@@ -54,6 +55,13 @@ public enum MailSender {
             // Set Subject: header field
             mimeMessage.setSubject("[ERROR LOG]");
 
+            String message = "";
+            for (int i=0; i<messageList.size(); i++){
+                message += (i+1) + ") " + messageList.get(i) + "\n";
+            }
+
+            System.out.println(message);
+            System.exit(0);
             // Now set the actual message
             mimeMessage.setText(message);
 

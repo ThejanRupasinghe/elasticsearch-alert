@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.TimerTask;
 
@@ -9,9 +10,9 @@ public class ScheduledTask extends TimerTask {
     public void run() {
 
         Date startDate = new Date();
-        String response = QueryElasticsearch.INSTANCE.query();
+        ArrayList<String> response = QueryElasticsearch.INSTANCE.query();
         if (!(response == null)) {
-            System.out.println(response);
+            System.out.println(response.toString());
                     MailSender.INSTANCE.sendMail(response);
 
         }

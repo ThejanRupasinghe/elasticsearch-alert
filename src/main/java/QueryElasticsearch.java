@@ -43,7 +43,9 @@ public enum QueryElasticsearch {
 
     }
 
-    public String query() {
+    public ArrayList<String> query() {
+
+        ArrayList<String> logMessages = new ArrayList<String>();
 
         Date date = new Date();
 
@@ -61,7 +63,7 @@ public enum QueryElasticsearch {
         Calendar calendar =Calendar.getInstance();
         calendar.setTime(date);
         calendar.add(Calendar.MILLISECOND, -(AlertMain.TIMEPERIOD+AlertMain.getPreviousExecutionTime()));
-        String timeForQueryNext = dateFormatQueryTime.format(calendar.getTime());
+        String timeForQueryPrevious = dateFormatQueryTime.format(calendar.getTime());
 
         String queryString = "";
         for (int i=0; i< Configuration.INSTANCE.getMatchList().size()-1;i++){
@@ -75,11 +77,11 @@ public enum QueryElasticsearch {
         QueryBuilder qb = queryStringQuery(queryString).defaultField("message");
 
         String timeStampToQuery = dateForQuery + "T" + timeForQuery + "Z";
-        String timeStampToQueryNext = dateForQuery + "T" + timeForQueryNext + "Z";
+        String timeStampToQueryPrevious = dateForQuery + "T" + timeForQueryPrevious + "Z";
         System.out.println(timeStampToQuery);
-        System.out.println(timeStampToQueryNext);
+        System.out.println(timeStampToQueryPrevious);
 
-        QueryBuilder qbr = rangeQuery("@timestamp").from(timeStampToQuery).to(timeStampToQueryNext);
+        QueryBuilder qbr = rangeQuery("@timestamp").from(timeStampToQueryPrevious).to(timeStampToQuery);
 
         String log_message = null;
 
@@ -94,9 +96,11 @@ public enum QueryElasticsearch {
             System.out.println(response.toString());
             System.out.println(response.getHits().getHits().length);
 
-            if(response.getHits().getHits().length>0){
-                log_message = response.getHits().getHits()[0].getSource().get("message").toString();
+            for (SearchHit hit : response.getHits().getHits()){
+                logMessages.add(hit.getSource().get("message").toString());
             }
+
+            System.out.println(logMessages.toString());
 
         } catch (NoNodeAvailableException e) {
 
@@ -112,12 +116,11 @@ public enum QueryElasticsearch {
 
 //        QueryBuilders.rangeQuery("age").from(12).to(18);
 
-        System.out.println(log_message);
 //        for (SearchHit hit : response.getHits().getHits()) {
 //            System.out.println(hit.getSource().get("@timestamp").toString());
 //        }
 
-        return log_message;
+        return logMessages;
 
     }
 }

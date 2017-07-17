@@ -9,7 +9,7 @@ public class AlertMain {
 
     public static final int TIMEPERIOD = 20000;
 
-    private static int previousExecutionTime;
+    private static int previousExecutionTime = 0;
 
     public static void main(String[] args) throws InterruptedException{
 
@@ -21,13 +21,9 @@ public class AlertMain {
             MailSender.INSTANCE.configureMail();
         }
 
-//        QueryElasticsearch.INSTANCE.query();
-
         Timer time = new Timer();
         ScheduledTask st = new ScheduledTask();
         time.schedule(st, 0, TIMEPERIOD);
-
-
 
     }
 
