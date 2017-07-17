@@ -54,13 +54,13 @@ public enum QueryElasticsearch {
         DateFormat dateFormatQuery = new SimpleDateFormat("yyyy-MM-dd");
         String dateForQuery = dateFormatQuery.format(date);
 
-        DateFormat dateFormatQueryTime = new SimpleDateFormat("HH:mm:ss");
+        DateFormat dateFormatQueryTime = new SimpleDateFormat("HH:mm:ss.SSS");
         dateFormatQueryTime.setTimeZone(new SimpleTimeZone(SimpleTimeZone.UTC_TIME, "UTC"));
         String timeForQuery = dateFormatQueryTime.format(date);
 
         Calendar calendar =Calendar.getInstance();
         calendar.setTime(date);
-        calendar.add(Calendar.SECOND, AlertMain.TIMEPERIOD/1000);
+        calendar.add(Calendar.MILLISECOND, -(AlertMain.TIMEPERIOD+AlertMain.getPreviousExecutionTime()));
         String timeForQueryNext = dateFormatQueryTime.format(calendar.getTime());
 
         String queryString = "";
@@ -74,8 +74,8 @@ public enum QueryElasticsearch {
 
         QueryBuilder qb = queryStringQuery(queryString).defaultField("message");
 
-        String timeStampToQuery = dateForQuery + "T" + timeForQuery + ".000Z";
-        String timeStampToQueryNext = dateForQuery + "T" + timeForQueryNext + ".000Z";
+        String timeStampToQuery = dateForQuery + "T" + timeForQuery + "Z";
+        String timeStampToQueryNext = dateForQuery + "T" + timeForQueryNext + "Z";
         System.out.println(timeStampToQuery);
         System.out.println(timeStampToQueryNext);
 
@@ -85,24 +85,25 @@ public enum QueryElasticsearch {
 
         try {
 
-            SearchResponse response = client.prepareSearch("logstash-" + dateForLogstashIndex)
+            SearchResponse response = client.prepareSearch("logstash-" + "2017.07.14")
                     .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                     .setQuery(qb)
-                    .setPostFilter(qbr)// Query
                     .setFrom(0).setSize(10).setExplain(false)
                     .get();
 
             System.out.println(response.toString());
             System.out.println(response.getHits().getHits().length);
 
-            log_message = response.getHits().getHits()[0].getSource().get("message").toString();
+            if(response.getHits().getHits().length>0){
+                log_message = response.getHits().getHits()[0].getSource().get("message").toString();
+            }
 
         } catch (NoNodeAvailableException e) {
 
             e.printStackTrace();
             System.out.println("No Available Nodes to connect. Please give correct configurations and run Elasticsearch.");
         } catch (IndexNotFoundException e) {
-//            e.printStackTrace();
+            e.printStackTrace();
             System.out.println("No such index");
         }
 

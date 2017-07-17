@@ -9,6 +9,8 @@ public class AlertMain {
 
     public static final int TIMEPERIOD = 20000;
 
+    private static int previousExecutionTime;
+
     public static void main(String[] args) throws InterruptedException{
 
         boolean goodConfiguration = Configuration.INSTANCE.readConfigurationFile();
@@ -28,4 +30,13 @@ public class AlertMain {
 
 
     }
+
+    public static int getPreviousExecutionTime() {
+        return previousExecutionTime;
+    }
+
+    public static void setPreviousExecutionTime(int previousExecutionTime) {
+        AlertMain.previousExecutionTime = previousExecutionTime;
+    }
+
 }
