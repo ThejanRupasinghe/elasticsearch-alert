@@ -83,13 +83,14 @@ public enum QueryElasticsearch {
 
         QueryBuilder qbr = rangeQuery("@timestamp").from(timeStampToQueryPrevious).to(timeStampToQuery);
 
-        String log_message = null;
+//        String log_message = null;
 
         try {
 
-            SearchResponse response = client.prepareSearch("logstash-" + "2017.07.14")
+            SearchResponse response = client.prepareSearch("logstash-" + dateForLogstashIndex)
                     .setSearchType(SearchType.DFS_QUERY_THEN_FETCH)
                     .setQuery(qb)
+                    .setPostFilter(qbr)
                     .setFrom(0).setSize(10).setExplain(false)
                     .get();
 
@@ -107,8 +108,8 @@ public enum QueryElasticsearch {
             e.printStackTrace();
             System.out.println("No Available Nodes to connect. Please give correct configurations and run Elasticsearch.");
         } catch (IndexNotFoundException e) {
-            e.printStackTrace();
-            System.out.println("No such index");
+//            e.printStackTrace();
+            System.out.println("No such index. Querying again in 20 seconds to find.");
         }
 
 

@@ -7,7 +7,7 @@ import java.util.TimerTask;
  */
 public class AlertMain {
 
-    public static final int TIMEPERIOD = 20000;
+    public static final int TIMEPERIOD = 25000;
 
     private static int previousExecutionTime = 0;
 

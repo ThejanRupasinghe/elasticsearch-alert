@@ -55,19 +55,24 @@ public enum MailSender {
             // Set Subject: header field
             mimeMessage.setSubject("[ERROR LOG]");
 
-            String message = "";
-            for (int i=0; i<messageList.size(); i++){
-                message += (i+1) + ") " + messageList.get(i) + "\n";
+            if (messageList.size()>0){
+                String message = "";
+                for (int i=0; i<messageList.size(); i++){
+                    message += (i+1) + ") " + messageList.get(i) + "\n";
+                }
+
+                System.out.println(message);
+//            System.exit(0);
+                // Now set the actual message
+                mimeMessage.setText(message);
+
+                // Send message
+                Transport.send(mimeMessage);
+                System.out.println("Sent message successfully....");
+            } else {
+                System.out.println("no email sending");
             }
 
-            System.out.println(message);
-            System.exit(0);
-            // Now set the actual message
-            mimeMessage.setText(message);
-
-            // Send message
-            Transport.send(mimeMessage);
-            System.out.println("Sent message successfully....");
             return true;
         }catch (MessagingException e) {
             e.printStackTrace();
