@@ -4,9 +4,9 @@
 
     "email_host": "smtp.gmail.com",
     "email_port": 587,
-    "email_username": "thejanrupasinghe@gmail.com",
-    "email_password": "etrlhcihevrdfmhm",
-    "email_receiver_address": "thejan@wso2.com"
+    "email_username": "senders_email",
+    "email_password": "email_password/app_key",
+    "email_receiver_address": "receivers_email"
 
   },
 
