@@ -18,7 +18,7 @@ public enum MailSender {
 
     INSTANCE;
 
-    private static final Logger logger = LogManager.getLogger(QueryElasticsearch.class);
+    private static final Logger logger = LogManager.getLogger(MailSender.class);
 
     private Properties properties = null;
     private String to_email ;

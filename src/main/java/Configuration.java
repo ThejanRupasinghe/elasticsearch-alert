@@ -38,6 +38,8 @@ public enum Configuration {
 
     private ArrayList<String> matchList;
 
+    private long pollingTime;
+
 
     /**
      *  This reads the config.json file in the same folder and changes the configuration variables
@@ -57,13 +59,13 @@ public enum Configuration {
 
         } catch (IOException e) {
 
-            e.printStackTrace();
+//            e.printStackTrace();
             logger.error("Configuration file not found");
             return false;
 
         } catch (ParseException e) {
 
-            e.printStackTrace();
+//            e.printStackTrace();
             logger.error("Error in configuration file");
             return false;
 
@@ -72,23 +74,37 @@ public enum Configuration {
         // Converts Parser Object to Json Object and changes the variables
         JSONObject jsonObject = (JSONObject) parserObject;
 
-        JSONObject emailDetailsJson = (JSONObject) jsonObject.get("email_details");
-        emailHost = (String) emailDetailsJson.get("email_host");
-        emailPort = (emailDetailsJson.get("email_port")).toString();
-        emailUsername = (String) emailDetailsJson.get("email_username");
-        emailPassword = (String) emailDetailsJson.get("email_password");
-        emailReceiversAddress = (String) emailDetailsJson.get("email_receiver_address");
+        try {
 
-        JSONObject elasticsearchDetailsJson = (JSONObject) jsonObject.get("elasticsearch_details");
-        elasticsearchHost = (String) elasticsearchDetailsJson.get("host");
-        elasticsearchClusterName = (String) elasticsearchDetailsJson.get("cluster_name");
+            JSONObject emailDetailsJson = (JSONObject) jsonObject.get("email_details");
+            emailHost = (String) emailDetailsJson.get("email_host");
+            emailPort = (emailDetailsJson.get("email_port")).toString();
+            emailUsername = (String) emailDetailsJson.get("email_username");
+            emailPassword = (String) emailDetailsJson.get("email_password");
+            emailReceiversAddress = (String) emailDetailsJson.get("email_receiver_address");
 
-        JSONArray matchListJson = (JSONArray) jsonObject.get("match_list");
+            JSONObject elasticsearchDetailsJson = (JSONObject) jsonObject.get("elasticsearch_details");
+            elasticsearchHost = (String) elasticsearchDetailsJson.get("host");
+            elasticsearchClusterName = (String) elasticsearchDetailsJson.get("cluster_name");
 
-        matchList = new ArrayList<String>();
+            JSONArray matchListJson = (JSONArray) jsonObject.get("match_list");
 
-        for (Object matchJson : matchListJson) {
-            matchList.add(matchJson.toString());
+            matchList = new ArrayList<String>();
+
+            for (Object matchJson : matchListJson) {
+                matchList.add(matchJson.toString());
+            }
+
+            pollingTime = (Long) jsonObject.get("polling_time");
+
+            // Sets query time period in AlertMain
+            AlertMain.setTimePeriod((int) pollingTime);
+
+        }catch (ClassCastException e) { // Handles any casting exception
+
+            logger.error("Error in Configuration details");
+            return false;
+
         }
 
         // If any configuration variable is still null, terminates the method and returns false
@@ -104,11 +120,12 @@ public enum Configuration {
             logger.info("Email Host : " + emailHost);
             logger.info("Email Port : " + emailPort);
             logger.info("Email Username : " + emailUsername);
+//            logger.info("Email Password: "+emailPassword);
             logger.info("Email Receiver's Address : " + emailReceiversAddress);
             logger.info("Elasticsearch Host : " + elasticsearchHost);
             logger.info("Elasticsearch Cluster Name : " + elasticsearchClusterName);
             logger.info("Match List : " + matchList.toString());
-//            logger.info("Email Password: "+emailPassword);
+            logger.info("Querying Time Interval : " + pollingTime + " ms");
 
             return true;    // Return true on successful configuration
         }
@@ -180,6 +197,14 @@ public enum Configuration {
      */
     public String getElasticsearchClusterName() {
         return elasticsearchClusterName;
+    }
+
+    /**
+     *
+     * @return Polling Time to be assigned as the TIMEPERIOD to query in AlertMain
+     */
+    public long getPollingTime() {
+        return pollingTime;
     }
 
 }

@@ -7,11 +7,12 @@ import java.util.Timer;
  */
 public class AlertMain {
 
-    public static final int TIMEPERIOD = 25000;
+    private static int timePeriod = 25000;
 
     private static int previousExecutionTime = 0;
 
     private static QueryTask queryTask;
+
 
     public static void main(String[] args) {
 
@@ -32,12 +33,20 @@ public class AlertMain {
 
                 Timer timer = new Timer();
                 queryTask = new QueryTask();
-                timer.schedule(queryTask, 0, TIMEPERIOD);
+                timer.schedule(queryTask, 0, timePeriod);
 
             }
 
         }
 
+    }
+
+    public static int getTimePeriod() {
+        return timePeriod;
+    }
+
+    public static void setTimePeriod(int timePeriod) {
+        AlertMain.timePeriod = timePeriod;
     }
 
     public static QueryTask getQueryTask () {

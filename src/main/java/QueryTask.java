@@ -14,7 +14,7 @@ import java.util.TimerTask;
  */
 public class QueryTask extends TimerTask {
 
-    private static final Logger logger = LogManager.getLogger(Configuration.class);
+    private static final Logger logger = LogManager.getLogger(QueryTask.class);
 
     /**
      * Implements run in TimerTask

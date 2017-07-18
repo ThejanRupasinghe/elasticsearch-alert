@@ -97,7 +97,7 @@ public enum QueryElasticsearch {
         Calendar calendar =Calendar.getInstance();
         calendar.setTime(date);
         // "from time" is ( current time - polling period - time for previous querying and mail sending )
-        calendar.add(Calendar.MILLISECOND, -(AlertMain.TIMEPERIOD+AlertMain.getPreviousExecutionTime()));
+        calendar.add(Calendar.MILLISECOND, -(AlertMain.getTimePeriod()+AlertMain.getPreviousExecutionTime()));
         String timeForQueryPrevious = dateFormatQueryTime.format(calendar.getTime());
 
         // Builds query string , connected with OR
@@ -156,7 +156,7 @@ public enum QueryElasticsearch {
         } catch (IndexNotFoundException e) {    // logstash index cannot be found
 
 //            e.printStackTrace();
-            logger.error("logstash-" + dateForLogstashIndex +" index not found. Querying again in " + (AlertMain.TIMEPERIOD/1000) + " seconds to find.");
+            logger.error("logstash-" + dateForLogstashIndex +" index not found. Querying again in " + (AlertMain.getTimePeriod()/1000) + " seconds to find.");
 
         }
 
