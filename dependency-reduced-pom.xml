@@ -4,7 +4,7 @@
   <groupId>com.elastic.app</groupId>
   <artifactId>elastic-alerting-app</artifactId>
   <name>Elasticsearch Alerting App</name>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
   <description>Make email alert for a matching elasticsearch query</description>
   <build>
     <plugins>

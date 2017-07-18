@@ -29,7 +29,7 @@ public class QueryTask extends TimerTask {
 
         if ( response == null ) {   // If response equals null means no elasticsearch node found
 
-            AlertMain.getQueryTask().cancel();
+            AlertMain.getTimer().cancel();
 
         } else {
 
@@ -38,7 +38,7 @@ public class QueryTask extends TimerTask {
 
             if (!( sendSuccess )) { // If error in email sending terminate repeating the query
 
-                AlertMain.getQueryTask().cancel();
+                AlertMain.getTimer().cancel();
 
             } else {
 

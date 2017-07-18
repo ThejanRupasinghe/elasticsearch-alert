@@ -116,7 +116,7 @@ public enum QueryElasticsearch {
         String timeStampToQuery = dateForQuery + "T" + timeForQuery + "Z";
         String timeStampToQueryPrevious = dateForQuery + "T" + timeForQueryPrevious + "Z";
 
-        logger.info("Query Range of @timestamp : from " + timeStampToQueryPrevious + " to " + timeStampToQuery);
+        logger.info("Query Range of @timestamp : from " + timeStampToQueryPrevious + " to " + timeStampToQuery + "in UTC");
 
         // Range Query Builder with @timestamp range to only take the log messages that appeared between two queries
         QueryBuilder rangeQueryBuilder = rangeQuery("@timestamp").from(timeStampToQueryPrevious).to(timeStampToQuery);

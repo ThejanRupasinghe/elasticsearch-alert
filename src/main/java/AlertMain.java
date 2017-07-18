@@ -11,8 +11,7 @@ public class AlertMain {
 
     private static int previousExecutionTime = 0;
 
-    private static QueryTask queryTask;
-
+    private static Timer timer;
 
     public static void main(String[] args) {
 
@@ -31,14 +30,18 @@ public class AlertMain {
             // Starts timer only if Elastic and mail clients are configured well
             if ( elasticConfigure && mailConfigure ) {
 
-                Timer timer = new Timer();
-                queryTask = new QueryTask();
+                timer = new Timer();
+                QueryTask queryTask = new QueryTask();
                 timer.schedule(queryTask, 0, timePeriod);
 
             }
 
         }
 
+    }
+
+    public static Timer getTimer () {
+        return timer;
     }
 
     public static int getTimePeriod() {
@@ -49,9 +52,6 @@ public class AlertMain {
         AlertMain.timePeriod = timePeriod;
     }
 
-    public static QueryTask getQueryTask () {
-        return queryTask;
-    }
     public static int getPreviousExecutionTime() {
         return previousExecutionTime;
     }
