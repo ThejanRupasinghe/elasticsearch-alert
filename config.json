@@ -3,9 +3,9 @@
     "email_details" : {
     	"email_host" : "smtp.gmail.com" ,
     	"email_port" : 587 ,
-    	"email_username" : "your_email_address / senders_email_address" ,
-    	"email_password" : "your_email_password / email_appkey" ,
-    	"email_receiver_address" : "receivers_email_address"
+    	"email_username" : "thejanrupasinghe@gmail.com" ,
+    	"email_password" : "etrlhcihevrdfmhm" ,
+    	"email_receiver_address" : "thejan@wso2.com"
     },
 
     "elasticsearch_details" : {
