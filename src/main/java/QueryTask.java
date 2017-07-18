@@ -34,20 +34,29 @@ public class QueryTask extends TimerTask {
         } else {
 
             // Empty response is handled my sendMail method
-            MailSender.INSTANCE.sendMail(response);
+            boolean sendSuccess = MailSender.INSTANCE.sendMail(response);
 
-            // End time of the task execution
-            Date endDate = new Date();
+            if (!( sendSuccess )) { // If error in email sending terminate repeating the query
 
-            // Takes time taken to execute
-            long timeTakenToExecute = endDate.getTime()-startDate.getTime();
+                AlertMain.getQueryTask().cancel();
 
-            logger.info("Time for the execution : " + timeTakenToExecute + " ms");
+            } else {
 
-            // Sets previous execution time
-            AlertMain.setPreviousExecutionTime((int)timeTakenToExecute);
+                // End time of the task execution
+                Date endDate = new Date();
+
+                // Takes time taken to execute
+                long timeTakenToExecute = endDate.getTime()-startDate.getTime();
+
+                logger.info("Time for the execution : " + timeTakenToExecute + " ms");
+
+                // Sets previous execution time
+                AlertMain.setPreviousExecutionTime((int)timeTakenToExecute);
+
+            }
 
         }
 
     }
+
 }

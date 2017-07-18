@@ -1,9 +1,9 @@
-import java.util.Date;
 import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Created by thejan on 7/13/17.
+ *
+ * Contains main method which configures the application and initiates the query task timer
  */
 public class AlertMain {
 
@@ -13,20 +13,30 @@ public class AlertMain {
 
     private static QueryTask queryTask;
 
-    public static void main(String[] args) throws InterruptedException{
+    public static void main(String[] args) {
 
+        boolean elasticConfigure = false;
+        boolean mailConfigure = false;
+
+        // Reads the config.json file and load the configurations
         boolean goodConfiguration = Configuration.INSTANCE.readConfigurationFile();
 
-        if (goodConfiguration) {
+        if ( goodConfiguration ) {    // If loading configuration is successful
 
-            QueryElasticsearch.INSTANCE.configure();
-            MailSender.INSTANCE.configureMail();
+            // Configures Elasticsearch and email sending clients
+            elasticConfigure = QueryElasticsearch.INSTANCE.configure();
+            mailConfigure = MailSender.INSTANCE.configureMail();
+
+            // Starts timer only if Elastic and mail clients are configured well
+            if ( elasticConfigure && mailConfigure ) {
+
+                Timer timer = new Timer();
+                queryTask = new QueryTask();
+                timer.schedule(queryTask, 0, TIMEPERIOD);
+
+            }
+
         }
-
-        Timer timer = new Timer();
-        queryTask = new QueryTask();
-        timer.schedule(queryTask, 0, TIMEPERIOD);
-        timer.cancel();
 
     }
 

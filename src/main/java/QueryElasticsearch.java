@@ -55,7 +55,7 @@ public enum QueryElasticsearch {
             client.addTransportAddress(new InetSocketTransportAddress(InetAddress.getByName(Configuration.INSTANCE.getElasticsearchHost()),9300));
             return true;
 
-        } catch (UnknownHostException e) {
+        } catch ( UnknownHostException e ) {
 
             logger.error("Unknown Elasticsearch Host");
             return false;
