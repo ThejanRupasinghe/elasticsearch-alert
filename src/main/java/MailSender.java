@@ -1,3 +1,10 @@
+/**
+ * Created by thejan on 7/13/17.
+ */
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
@@ -5,19 +12,23 @@ import java.util.ArrayList;
 import java.util.Properties;
 
 /**
- * Created by thejan on 7/13/17.
+ * This configures email and sends emails. Singleton class.
  */
 public enum MailSender {
 
     INSTANCE;
 
+    private static final Logger logger = LogManager.getLogger(QueryElasticsearch.class);
+
     private Properties properties = null;
     private String to_email ;
     private String from_email ;
 
+
     /**
+     * This method configures the email sender
      *
-     * @return
+     * @return true in successful configuration
      */
     public boolean configureMail () {
 
@@ -36,57 +47,69 @@ public enum MailSender {
 
     }
 
+
     /**
+     * This method sends mail to configured email when results are found in the query
      *
-     * @param messageList
-     * @return
+     * @param messageList of found messages in response of the query
+     * @return true on successful mail send, false in error
      */
     public boolean sendMail(ArrayList<String> messageList) {
 
-        // Get the default Session object.
-        Session session = Session.getDefaultInstance(properties,
-                new javax.mail.Authenticator() {    // Define the authenticator
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(Configuration.INSTANCE.getEmailUsername(),Configuration.INSTANCE.getEmailPassword());
-                    }
-                });
+        if ( ! ( messageList.isEmpty() ) ) {    // Authenticate and configure only if messages are found
 
-        try {
-            // Create a default MimeMessage object.
-            MimeMessage mimeMessage = new MimeMessage(session);
+            // Gets the default Session object.
+            Session session = Session.getDefaultInstance(properties,
+                    new javax.mail.Authenticator() {    // Define the authenticator
+                        protected PasswordAuthentication getPasswordAuthentication() {
+                            return new PasswordAuthentication(Configuration.INSTANCE.getEmailUsername(), Configuration.INSTANCE.getEmailPassword());
+                        }
+                    });
 
-            // Set From: header field of the header.
-            mimeMessage.setFrom(new InternetAddress(from_email));
+            try {
 
-            // Set To: header field of the header.
-            mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(to_email));
+                // Creates a default MimeMessage object.
+                MimeMessage mimeMessage = new MimeMessage(session);
 
-            // Set Subject: header field
-            mimeMessage.setSubject("[ERROR LOG]");
+                // Sets From: header field of the header.
+                mimeMessage.setFrom(new InternetAddress(from_email));
 
-            if (messageList.size()>0){
+                // Sets To: header field of the header.
+                mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(to_email));
+
+                // Sets Subject: header field
+                mimeMessage.setSubject("[ERROR LOG]");
+
+
                 String message = "";
-                for (int i=0; i<messageList.size(); i++){
-                    message += (i+1) + ") " + messageList.get(i) + "\n";
+                for (int i = 0; i < messageList.size(); i++) {
+                    message += (i + 1) + ") " + messageList.get(i) + "\n";
                 }
 
-                System.out.println(message);
-//            System.exit(0);
-                // Now set the actual message
+
+                // Sets the body of the email
                 mimeMessage.setText(message);
 
-                // Send message
+                // Sends the email
                 Transport.send(mimeMessage);
-                System.out.println("Sent message successfully....");
-            } else {
-                System.out.println("no email sending");
+
+                // If no errors in sending
+                logger.info("Email sent successfully");
+
+                return true;
+
+            }catch(MessagingException e){
+
+//                e.printStackTrace();
+                logger.error("Error in email sending. Check your email configurations.");
+                return false;
+
             }
 
+        } else {
+
+            // Empty responses, no email sending , nothing to log.
             return true;
-        }catch (MessagingException e) {
-            e.printStackTrace();
-            System.out.println("Error in email sending");
-            return false;
         }
 
     }
