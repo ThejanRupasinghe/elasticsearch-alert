@@ -1,22 +1,25 @@
 {
 
-    "email_details" : {
-    	"email_host" : "smtp.gmail.com" ,
-    	"email_port" : 587 ,
-    	"email_username" : "thejanrupasinghe@gmail.com" ,
-    	"email_password" : "etrlhcihevrdfmhm" ,
-    	"email_receiver_address" : "thejan@wso2.com"
-    },
+  "email_details": {
 
-    "elasticsearch_details" : {
-    	"host" : "localhost" ,
-    	"cluster_name" : "elasticsearch"
-    },
+    "email_host": "smtp.gmail.com",
+    "email_port": 587,
+    "email_username": "thejanrupasinghe@gmail.com",
+    "email_password": "etrlhcihevrdfmhm",
+    "email_receiver_address": "thejan@wso2.com"
 
-    "match_list" : [
-    	"ERROR"
-    ],
+  },
 
-	"polling_time" : 25000
+  "elasticsearch_details": {
+
+    "host": "localhost",
+    "cluster_name": "elasticsearch"
+  },
+
+  "match_list": [
+    "ERROR"
+  ],
+
+  "polling_time": 25000
 
 }
