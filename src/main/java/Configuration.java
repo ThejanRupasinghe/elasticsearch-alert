@@ -48,7 +48,7 @@ public enum Configuration {
 
         JSONParser parser = new JSONParser();
 
-        Object parserObject = null;
+        Object parserObject;
 
         // Reads the config.json file and parse it to Parser Object which will be later converted to Json Object.
         try {
