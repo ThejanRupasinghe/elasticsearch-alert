@@ -1,3 +1,7 @@
+/**
+ * Created by thejan on 7/14/17.
+ */
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.elasticsearch.action.search.SearchResponse;
@@ -20,7 +24,7 @@ import java.util.*;
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
- * Created by thejan on 7/14/17.
+ * This class configure the elasticsearch client and query from elasticsearch. Singleton class.
  */
 public enum QueryElasticsearch {
 
@@ -112,7 +116,7 @@ public enum QueryElasticsearch {
         String timeStampToQuery = dateForQuery + "T" + timeForQuery + "Z";
         String timeStampToQueryPrevious = dateForQuery + "T" + timeForQueryPrevious + "Z";
 
-        logger.info("Query Range : from " + timeStampToQueryPrevious + " to " + timeStampToQuery);
+        logger.info("Query Range of @timestamp : from " + timeStampToQueryPrevious + " to " + timeStampToQuery);
 
         // Range Query Builder with @timestamp range to only take the log messages that appeared between two queries
         QueryBuilder rangeQueryBuilder = rangeQuery("@timestamp").from(timeStampToQueryPrevious).to(timeStampToQuery);
@@ -144,12 +148,15 @@ public enum QueryElasticsearch {
         } catch (NoNodeAvailableException e) {  // If no Elasticsearch instance is running
 
 //            e.printStackTrace();
-            logger.info("No available Elasticsearch Nodes to connect. Please give correct configurations and run Elasticsearch.");
+            logger.error("No available Elasticsearch Nodes to connect. Please give correct configurations and run Elasticsearch.");
+
+            // Returns null to terminate program, if no node
+            return null;
 
         } catch (IndexNotFoundException e) {    // logstash index cannot be found
 
 //            e.printStackTrace();
-            logger.info("logstash-" + dateForLogstashIndex +" index not found. Querying again in " + (AlertMain.TIMEPERIOD/1000) + " seconds to find.");
+            logger.error("logstash-" + dateForLogstashIndex +" index not found. Querying again in " + (AlertMain.TIMEPERIOD/1000) + " seconds to find.");
 
         }
 

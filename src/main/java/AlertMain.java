@@ -11,6 +11,8 @@ public class AlertMain {
 
     private static int previousExecutionTime = 0;
 
+    private static QueryTask queryTask;
+
     public static void main(String[] args) throws InterruptedException{
 
         boolean goodConfiguration = Configuration.INSTANCE.readConfigurationFile();
@@ -21,12 +23,16 @@ public class AlertMain {
             MailSender.INSTANCE.configureMail();
         }
 
-        Timer time = new Timer();
-        ScheduledTask st = new ScheduledTask();
-        time.schedule(st, 0, TIMEPERIOD);
+        Timer timer = new Timer();
+        queryTask = new QueryTask();
+        timer.schedule(queryTask, 0, TIMEPERIOD);
+        timer.cancel();
 
     }
 
+    public static QueryTask getQueryTask () {
+        return queryTask;
+    }
     public static int getPreviousExecutionTime() {
         return previousExecutionTime;
     }

@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 /**
- * This class will do the configurations of MailSender and matching patterns
+ * This class does the configurations of MailSender and matching patterns. Singleton class
  */
 public enum Configuration {
 
