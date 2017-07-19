@@ -14,11 +14,12 @@ The basic usage of this app is to work as a watcher for error logs and alert the
 
   "email_details": {
 
-    "email_host": "smtp.gmail.com",                   // Add your email host here. For gmail it's smtp.gmail.com
-    "email_port": 587,                                // Add the email sending port here. For google smtp it's 587
-    "email_username": "sender@example.com",           // Add your email / sender's email address here
-    "email_password": "password/appkey,               // Add your email password / mail app key in gmail here
-    "email_receiver_address": "receiver@example.com"  // Add the receiver's email / email address you want to receive alerts
+    "email_host": "smtp.gmail.com",
+    "email_port": 587, 
+    "email_username": "sender@example.com",
+    "email_password": "password/appkey",
+    "email_to_addresses": ["to@example.com", "to1@example.com"]  // 
+    "email_cc_addresses": ["cc@example.com"]
 
   },
 
@@ -36,3 +37,15 @@ The basic usage of this app is to work as a watcher for error logs and alert the
 
 }
 ```
+
+```"email_host": "smtp.gmail.com"``` : Add your email host here. For gmail it's smtp.gmail.com
+
+```"email_port": 587``` : Add the email sending port here. For google smtp it's 587
+
+```"email_username": "sender@example.com"``` : Add your email / sender's email address here
+
+```"email_password": "password/appkey"``` : Add your email password / mail app key in gmail here
+
+```"email_to_addresses": ["to@example.com", "to1@example.com"]``` : Add the " TO receivers' " email list
+
+```"email_cc_addresses": ["cc@example.com"]``` : Add the " CC receivers' " email list. Keep empty for no CC .
