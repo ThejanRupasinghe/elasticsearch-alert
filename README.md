@@ -18,22 +18,22 @@ The basic usage of this app is to work as a watcher for error logs and alert the
     "email_port": 587, 
     "email_username": "sender@example.com",
     "email_password": "password/appkey",
-    "email_to_addresses": ["to@example.com", "to1@example.com"]  // 
+    "email_to_addresses": ["to@example.com", "to1@example.com"]
     "email_cc_addresses": ["cc@example.com"]
 
   },
 
   "elasticsearch_details": {
 
-    "host": "localhost",                              // Add the Elasticsearch host IP ( or localhost ) here
-    "cluster_name": "elasticsearch"                   // Add the name of the Elasticsearch cluster you want to search
+    "host": "localhost", 
+    "cluster_name": "elasticsearch"
   },
 
-  "match_list": [                                     // Add the strings you want to match here in a array
+  "match_list": [ 
     "ERROR"
   ],
 
-  "polling_time": 25000                               // Add the time interval you want to query in milliseconds
+  "polling_time": 25000
 
 }
 ```
@@ -49,3 +49,11 @@ The basic usage of this app is to work as a watcher for error logs and alert the
 ```"email_to_addresses": ["to@example.com", "to1@example.com"]``` : Add the " TO receivers' " email list
 
 ```"email_cc_addresses": ["cc@example.com"]``` : Add the " CC receivers' " email list. Keep empty for no CC .
+
+```"host": "localhost"``` : Add the Elasticsearch host IP ( or localhost ) here
+
+```"cluster_name": "elasticsearch"``` : Add the name of the Elasticsearch cluster you want to search
+
+```"match_list": [ "ERROR" ]``` : Add the strings you want to match here in a array
+
+```"polling_time": 25000``` : Add the time interval you want to query in milliseconds
