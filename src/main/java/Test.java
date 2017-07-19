@@ -36,19 +36,15 @@ public class Test {
 //    private final static Logger LOGGER = LogManager.getLogger(Test.class);
 
     public static void main(String[] args) {
-//
-        Date date = new Date();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-////        dateFormat.setTimeZone(new SimpleTimeZone(SimpleTimeZone.UTC_TIME, "UTC"));
-        String formattedDate = dateFormat.format(date);
-        System.out.println(formattedDate);
-//        Calendar cal =Calendar.getInstance();
-//        cal.setTime(date);
-//        cal.add(Calendar.SECOND, 20);
-//        System.out.println(cal.getTime());
-//        System.out.println(formattedDate);
 
-//        System.out.println(1834/1000);
+//        System.out.println("hey");
+
+        boolean goodConfiguration = Configuration.INSTANCE.readConfigurationFile();
+
+        MailSender.INSTANCE.configureMail();
+
+        MailSender.INSTANCE.sendMail(new ArrayList<String>(Arrays.asList("xyz", "abc")));
+
     }
 
     public void testMethod () {

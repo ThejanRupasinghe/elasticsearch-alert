@@ -9,6 +9,7 @@ import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Properties;
 
 /**
@@ -21,7 +22,9 @@ public enum MailSender {
     private static final Logger logger = LogManager.getLogger(MailSender.class);
 
     private Properties properties = null;
-    private String to_email ;
+    private ArrayList<String> to_email_list ;
+    private ArrayList<String> cc_email_list;
+
     private String from_email ;
 
 
@@ -40,7 +43,8 @@ public enum MailSender {
         properties.put("mail.smtp.port", Configuration.INSTANCE.getEmailPort());
         properties.put("mail.smtp.auth", true);
 
-        to_email = Configuration.INSTANCE.getEmailReceiversAddress();
+        to_email_list = Configuration.INSTANCE.getEmailToAddresses();
+        cc_email_list = Configuration.INSTANCE.getEmailCCAddresses();
         from_email = Configuration.INSTANCE.getEmailUsername();
 
         return true;
@@ -75,8 +79,26 @@ public enum MailSender {
                 // Sets From: header field of the header.
                 mimeMessage.setFrom(new InternetAddress(from_email));
 
-                // Sets To: header field of the header.
-                mimeMessage.addRecipient(Message.RecipientType.TO, new InternetAddress(to_email));
+                // Sets TO: header field of the header.
+                Address[] toAddresses = new Address[to_email_list.size()];
+                for( int i=0; i<to_email_list.size();i++){
+                    toAddresses[i] = new InternetAddress(to_email_list.get(i));
+                }
+
+                mimeMessage.addRecipients(Message.RecipientType.TO, toAddresses );
+
+
+                // Only if there are CC addresses
+                if (!( cc_email_list.isEmpty() )) {
+                    // Sets CC: header field of the header.
+                    Address[] ccAddresses = new Address[cc_email_list.size()];
+                    for( int i=0; i<cc_email_list.size();i++){
+                        ccAddresses[i] = new InternetAddress(cc_email_list.get(i));
+                    }
+
+                    mimeMessage.addRecipients(Message.RecipientType.CC, ccAddresses );
+                }
+
 
                 // Sets Subject: header field
                 mimeMessage.setSubject("[ERROR LOG]");

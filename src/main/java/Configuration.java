@@ -31,7 +31,8 @@ public enum Configuration {
     private String emailPort;
     private String emailUsername;
     private String emailPassword;
-    private String emailReceiversAddress;
+    private ArrayList<String> emailToAddresses;
+    private ArrayList<String> emailCCAddresses;
 
     private String elasticsearchHost;
     private String elasticsearchClusterName;
@@ -81,7 +82,24 @@ public enum Configuration {
             emailPort = (emailDetailsJson.get("email_port")).toString();
             emailUsername = (String) emailDetailsJson.get("email_username");
             emailPassword = (String) emailDetailsJson.get("email_password");
-            emailReceiversAddress = (String) emailDetailsJson.get("email_receiver_address");
+
+            // Creating TO and CC email lists
+            JSONArray toEmailListJson = (JSONArray) emailDetailsJson.get("email_to_addresses");
+
+            emailToAddresses = new ArrayList<String>();
+
+            for (Object matchJson : toEmailListJson) {
+                emailToAddresses.add(matchJson.toString());
+            }
+
+            JSONArray ccEmailListJson = (JSONArray) emailDetailsJson.get("email_cc_addresses");
+
+            emailCCAddresses = new ArrayList<String>();
+
+            for (Object matchJson : ccEmailListJson) {
+                emailCCAddresses.add(matchJson.toString());
+            }
+
 
             JSONObject elasticsearchDetailsJson = (JSONObject) jsonObject.get("elasticsearch_details");
             elasticsearchHost = (String) elasticsearchDetailsJson.get("host");
@@ -108,7 +126,7 @@ public enum Configuration {
         }
 
         // If any configuration variable is still null, terminates the method and returns false
-        if( emailHost==null || emailPort==null || emailUsername==null || emailPassword==null || matchList==null || emailReceiversAddress==null) {
+        if( emailHost == null || emailPort == null || emailUsername == null || emailPassword == null || matchList == null || emailToAddresses == null || emailToAddresses.isEmpty()) {
 
             logger.error("Error in Configuration details");
             return false;
@@ -121,7 +139,7 @@ public enum Configuration {
             logger.info("Email Port : " + emailPort);
             logger.info("Email Username : " + emailUsername);
 //            logger.info("Email Password: "+emailPassword);
-            logger.info("Email Receiver's Address : " + emailReceiversAddress);
+            logger.info("Email Receivers' Addresses :  TO : " + emailToAddresses + "  CC : " + emailCCAddresses);
             logger.info("Elasticsearch Host : " + elasticsearchHost);
             logger.info("Elasticsearch Cluster Name : " + elasticsearchClusterName);
             logger.info("Match List : " + matchList.toString());
@@ -177,10 +195,18 @@ public enum Configuration {
 
     /**
      *
-     * @return Email Address of the email alert receiver
+     * @return Email Address of the email alert receivers in "cc" field
      */
-    public String getEmailReceiversAddress() {
-        return emailReceiversAddress;
+    public ArrayList<String> getEmailCCAddresses() {
+        return emailCCAddresses;
+    }
+
+    /**
+     *
+     * @return Email Address of the email alert receivers in "to" field
+     */
+    public ArrayList<String> getEmailToAddresses() {
+        return emailToAddresses;
     }
 
     /**
@@ -199,12 +225,5 @@ public enum Configuration {
         return elasticsearchClusterName;
     }
 
-    /**
-     *
-     * @return Polling Time to be assigned as the TIMEPERIOD to query in AlertMain
-     */
-    public long getPollingTime() {
-        return pollingTime;
-    }
 
 }

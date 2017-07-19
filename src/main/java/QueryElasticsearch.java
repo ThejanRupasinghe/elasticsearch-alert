@@ -101,11 +101,13 @@ public enum QueryElasticsearch {
         String timeForQueryPrevious = dateFormatQueryTime.format(calendar.getTime());
 
         // Builds query string , connected with OR
-        String queryString = "";
+        StringBuffer buffer = new StringBuffer();
         for (int i=0; i< Configuration.INSTANCE.getMatchList().size()-1;i++){
-            queryString += Configuration.INSTANCE.getMatchList().get(i);
-            queryString += " OR ";
+            buffer.append(Configuration.INSTANCE.getMatchList().get(i));
+            buffer.append("OR");
         }
+
+        String queryString = buffer.toString();
         queryString+=Configuration.INSTANCE.getMatchList().get(Configuration.INSTANCE.getMatchList().size()-1);
         logger.info("Query String : " + queryString);
 
@@ -116,7 +118,7 @@ public enum QueryElasticsearch {
         String timeStampToQuery = dateForQuery + "T" + timeForQuery + "Z";
         String timeStampToQueryPrevious = dateForQuery + "T" + timeForQueryPrevious + "Z";
 
-        logger.info("Query Range of @timestamp : from " + timeStampToQueryPrevious + " to " + timeStampToQuery + "in UTC");
+        logger.info("Query Range of @timestamp : from " + timeStampToQueryPrevious + " to " + timeStampToQuery + " in UTC");
 
         // Range Query Builder with @timestamp range to only take the log messages that appeared between two queries
         QueryBuilder rangeQueryBuilder = rangeQuery("@timestamp").from(timeStampToQueryPrevious).to(timeStampToQuery);
@@ -143,7 +145,10 @@ public enum QueryElasticsearch {
                 responsePrint += (i+1) + ") " + logMessages.get(i) + "\n";
             }
 
-            logger.info(responsePrint);
+            // Only if there are responses
+            if(response.getHits().getHits().length != 0) {
+                logger.info(responsePrint);
+            }
 
         } catch (NoNodeAvailableException e) {  // If no Elasticsearch instance is running
 
@@ -156,7 +161,7 @@ public enum QueryElasticsearch {
         } catch (IndexNotFoundException e) {    // logstash index cannot be found
 
 //            e.printStackTrace();
-            logger.error("logstash-" + dateForLogstashIndex +" index not found. Querying again in " + (AlertMain.getTimePeriod()/1000) + " seconds to find.");
+            logger.error("logstash-" + dateForLogstashIndex +" index not found. Querying again in " + (AlertMain.getTimePeriod()/1000) + " seconds to find index.");
 
         }
 
