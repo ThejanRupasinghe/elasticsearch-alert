@@ -104,7 +104,7 @@ public enum QueryElasticsearch {
         StringBuffer buffer = new StringBuffer();
         for (int i=0; i< Configuration.INSTANCE.getMatchList().size()-1;i++){
             buffer.append(Configuration.INSTANCE.getMatchList().get(i));
-            buffer.append("OR");
+            buffer.append(" OR ");
         }
 
         String queryString = buffer.toString();
