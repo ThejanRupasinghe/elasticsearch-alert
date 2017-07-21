@@ -106,7 +106,7 @@ public enum MailSender {
 
                 String message = "";
                 for (int i = 0; i < messageList.size(); i++) {
-                    message += (i + 1) + ") " + messageList.get(i) + "\n";
+                    message += (i + 1) + ") " + messageList.get(i) + "\n\n";
                 }
 
 
