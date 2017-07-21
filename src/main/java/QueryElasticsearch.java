@@ -102,7 +102,7 @@ public enum QueryElasticsearch {
 
         // Builds query string , connected with OR
         StringBuffer buffer = new StringBuffer();
-        for (int i=0; i< Configuration.INSTANCE.getMatchList().size()-1;i++){
+        for ( int i = 0; i < Configuration.INSTANCE.getMatchList().size()-1; i++ ){
             buffer.append(Configuration.INSTANCE.getMatchList().get(i));
             buffer.append(" OR ");
         }
