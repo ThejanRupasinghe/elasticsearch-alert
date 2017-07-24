@@ -33,10 +33,10 @@ public enum QueryElasticsearch {
     private static final Logger logger = LogManager.getLogger(QueryElasticsearch.class);
 
     // Elasticsearch settings object
-    Settings settings;
+    private Settings settings;
 
     // Defines elasticsearch Transport Client as client
-    TransportClient client;
+    private TransportClient client;
 
 
     /**
