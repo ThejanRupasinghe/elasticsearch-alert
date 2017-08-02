@@ -23,8 +23,7 @@ public enum Configuration {
 
     private static final Logger logger = LogManager.getLogger(Configuration.class);
 
-    // Configuration file name
-    private final String FILENAME = "config.json";
+    private static final String FILENAME = "config.json";
 
     // Configuration variables taking from the config.json file
     private String emailHost;
@@ -38,8 +37,6 @@ public enum Configuration {
     private String elasticsearchClusterName;
 
     private ArrayList<String> matchList;
-
-    private long pollingTime;
 
 
     /**
@@ -56,7 +53,7 @@ public enum Configuration {
         // Reads the config.json file and parse it to Parser Object which will be later converted to Json Object.
         try {
 
-             parserObject = parser.parse(new FileReader(FILENAME));
+            parserObject = parser.parse(new FileReader(FILENAME));
 
         } catch (IOException e) {
 
@@ -74,6 +71,9 @@ public enum Configuration {
 
         // Converts Parser Object to Json Object and changes the variables
         JSONObject jsonObject = (JSONObject) parserObject;
+
+        // polling time will be taken from the configuration file
+        long pollingTime;
 
         try {
 
